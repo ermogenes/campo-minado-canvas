@@ -1,3 +1,16 @@
 body {
     text-align: center;
+    min-width: 640px;
+}
+
+.venceu {
+    background-color: #00ff00;
+}
+
+.perdeu {
+    background-color: #ff0000;
+}
+
+.em-jogo {
+    cursor: pointer;
 }
