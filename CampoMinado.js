@@ -201,7 +201,7 @@ export const CampoMinado = class {
       for (let coluna = 0; coluna < this.tamanho; coluna++)
         if (
           this.campo[linha][coluna] != this.mina &&
-          this.podeAbrir(linha, coluna)
+          (this.podeAbrir(linha, coluna) || this.sinalizado[linha][coluna])
         )
           return false;
     return true;
