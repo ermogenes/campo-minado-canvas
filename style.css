@@ -1,6 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Nabla&display=swap');
+
 body {
     text-align: center;
     min-width: 640px;
+    background-color: #282a36;
+    font-family: 'Nabla', cursive;
+}
+
+.titulo {
+    font-family: 'Nabla', cursive;
 }
 
 .venceu {
@@ -13,4 +21,9 @@ body {
 
 .em-jogo {
     cursor: pointer;
+}
+
+canvas {
+    border-radius: 5px;
+    box-shadow: 5px 5px 2px black;
 }
