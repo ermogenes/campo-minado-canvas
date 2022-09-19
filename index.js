@@ -1,14 +1,17 @@
 import { CampoMinado } from "./CampoMinado.js";
 import { UI } from "./UI.js";
 
-const jogo = new CampoMinado(10, 0.1);
+const celulasPorLinha = 10;
+const jogo = new CampoMinado(celulasPorLinha, 0.1);
 let tela;
 let interfaceDoJogo;
 let emJogo = false;
 
 const iniciar = () => {
   tela = document.getElementById("tela");
-  interfaceDoJogo = new UI(jogo, tela.getContext("2d"));
+  let larguraCelula = definirTamanho(tela);
+
+  interfaceDoJogo = new UI(jogo, tela.getContext("2d"), larguraCelula);
 
   // Eventos de clique do mouse
 
@@ -37,6 +40,19 @@ const iniciar = () => {
   interfaceDoJogo.exibeCampo();
 
   ativaJogo();
+};
+
+const definirTamanho = (tela) => {
+  const larguraViewPort = document.body.clientWidth;
+  let larguraTela;
+  if (larguraViewPort < 500) {
+    larguraTela = larguraViewPort / celulasPorLinha;
+  } else {
+    larguraTela = 48;
+  }
+  tela.width = larguraTela * celulasPorLinha;
+  tela.height = larguraTela * celulasPorLinha;
+  return larguraTela;
 };
 
 const cliqueNoCampoMinado = (ev) => {

@@ -31,9 +31,10 @@ export const UI = class {
   imgTransparenteDataUri =
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAIVJREFUaEPt0rENACAMxMBk/6UZ4goUyfR+gc3O8bPH7z894HfBClQADfSFUCDjFWCFOFABFMh4BVghDlQABTJeAVaIAxVAgYxXgBXiQAVQIOMVYIU4UAEUyHgFWCEOVAAFMl4BVogDFUCBjFeAFeJABVAg4xVghThQARTIeAVYIQ6cL/AAmvUAMfJYo3UAAAAASUVORK5CYII=";
 
-  constructor(jogo, ctx2d) {
+  constructor(jogo, ctx2d, larguraCelula = 48) {
     this.campoMinado = jogo;
     this.ctx2d = ctx2d;
+    this.larguraCelula = larguraCelula;
     this.sfxAbrir = new Audio(this.sfxAbrirSrc);
     this.sfxPerder = new Audio(this.sfxPerderSrc);
     this.sfxVencer = new Audio(this.sfxVencerSrc);
@@ -45,7 +46,9 @@ export const UI = class {
       this.ctx2d.drawImage(
         imgFundo,
         coluna * this.larguraCelula,
-        linha * this.larguraCelula
+        linha * this.larguraCelula,
+        this.larguraCelula,
+        this.larguraCelula
       );
 
       const imgIcone = new Image();
@@ -53,7 +56,9 @@ export const UI = class {
         this.ctx2d.drawImage(
           imgIcone,
           coluna * this.larguraCelula,
-          linha * this.larguraCelula
+          linha * this.larguraCelula,
+          this.larguraCelula,
+          this.larguraCelula
         );
       });
       imgIcone.setAttribute("src", src);
