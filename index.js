@@ -11,10 +11,26 @@ const iniciar = () => {
   interfaceDoJogo = new UI(jogo, tela.getContext("2d"));
 
   // Eventos de clique do mouse
+
+  // Clique do mouse ou qualquer dispositivo de ponteiro
   tela.addEventListener("pointerup", cliqueNoCampoMinado, false);
-  tela.addEventListener("contextmenu", (e) => {
-    if (e.button === 2) e.preventDefault();
+
+  // Desativa menu de contexto para botão direito
+  tela.addEventListener("contextmenu", (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
   });
+
+  // Habilita toque longo para sinalizar em telas touch
+  let timer;
+  tela.addEventListener("touchstart", (ev) => {
+    timer = setTimeout(() => {
+      timer = null;
+      toqueLongoNoCampoMinado(ev);
+    }, 500);
+  });
+  tela.addEventListener("touchend", () => clearTimeout(timer));
+  tela.addEventListener("touchmove", () => clearTimeout(timer));
 
   // Exibe a tela inicial
   // as alterações serão exibidas após cada clique
@@ -27,26 +43,50 @@ const cliqueNoCampoMinado = (ev) => {
   ev.preventDefault();
   ev.stopPropagation();
 
-  if (!emJogo) return;
+  const coluna = parseInt(ev.offsetX / interfaceDoJogo.larguraCelula);
+  const linha = parseInt(ev.offsetY / interfaceDoJogo.larguraCelula);
+
+  if (linha >= 10 || linha < 0 || coluna >= 10 || coluna < 0) return;
+
+  let acao;
+  if (ev.button === 0) acao = "abrir";
+  if (ev.button === 2) acao = "sinalizar";
+
+  if (acao) realizarAcao(acao, linha, coluna);
+  else return false;
+};
+
+const toqueLongoNoCampoMinado = (ev) => {
+  ev.preventDefault();
+  ev.stopPropagation();
+
+  ev.offsetX = ev.touches[0].pageX - ev.touches[0].target.offsetLeft;
+  ev.offsetY = ev.touches[0].pageY - ev.touches[0].target.offsetTop;
 
   const coluna = parseInt(ev.offsetX / interfaceDoJogo.larguraCelula);
   const linha = parseInt(ev.offsetY / interfaceDoJogo.larguraCelula);
 
   if (linha >= 10 || linha < 0 || coluna >= 10 || coluna < 0) return;
 
+  realizarAcao("sinalizar", linha, coluna);
+};
+
+const realizarAcao = (tipo = "abrir", linha, coluna) => {
+  if (!emJogo) return;
+
   let venceu = false;
   let explodiu = false;
   let final = false;
   let abriuLocal = false;
 
-  switch (ev.button) {
-    case 0: // botão esquerdo do mouse
+  switch (tipo) {
+    case "abrir": // botão esquerdo do mouse
       if (jogo.podeAbrir(linha, coluna)) {
         explodiu = jogo.abreLocal(linha, coluna);
         abriuLocal = true;
       }
       break;
-    case 2: // botão direito do mouse
+    case "sinalizar": // botão direito do mouse
       if (jogo.podeSinalizar(linha, coluna))
         jogo.inverteSinalizacao(linha, coluna);
       break;
