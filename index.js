@@ -11,7 +11,7 @@ const iniciar = () => {
   interfaceDoJogo = new UI(jogo, tela.getContext("2d"));
 
   // Eventos de clique do mouse
-  tela.addEventListener("mouseup", cliqueNoCampoMinado, false);
+  tela.addEventListener("pointerup", cliqueNoCampoMinado, false);
   tela.addEventListener("contextmenu", (e) => {
     if (e.button === 2) e.preventDefault();
   });
